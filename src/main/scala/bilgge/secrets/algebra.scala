@@ -10,6 +10,7 @@ final case class Secret(id: Option[UUID] = None,
                         title: String,
                         content: String,
                         iv: String,
+                        hashes: List[String],
                         createdAt: Option[LocalDateTime] = None,
                         updatedAt: Option[LocalDateTime] = None)
 
@@ -20,7 +21,8 @@ trait SecretRepository[F[_]] {
   def getBy(id: UUID, userId: UUID): F[Option[Secret]]
   def listBy(userId: UUID,
              collectionId: UUID,
+             hashes: List[String],
              offset: Int,
              limit: Int): F[List[Secret]]
-  def totalBy(userId: UUID, collectionId: UUID)
+  def totalBy(userId: UUID, collectionId: UUID, hashes: List[String]): F[Int]
 }
