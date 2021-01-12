@@ -1,4 +1,9 @@
-lazy val dependencies = new {}
+lazy val dependencies = new {
+  lazy val catsCore = "org.typelevel" %% "cats-core" % "2.1.1"
+  lazy val catsEffect = "org.typelevel" %% "cats-effect" % "2.3.1"
+  lazy val scalaTest = "org.scalatest" %% "scalatest" % "3.1.0"
+  lazy val catsEffectTesting = "com.codecommit" %% "cats-effect-testing-scalatest" % "0.5.0"
+}
 
 lazy val root = (project in file("."))
   .settings(
@@ -61,7 +66,12 @@ lazy val root = (project in file("."))
       "-Ycache-plugin-class-loader:last-modified", // Enables caching of classloaders for compiler plugins
       "-Ycache-macro-class-loader:last-modified" // and macro definitions. This can lead to performance improvements.
     ),
-    libraryDependencies ++= Seq()
+    libraryDependencies ++= Seq(
+      dependencies.catsCore,
+      dependencies.catsEffect,
+      dependencies.scalaTest % Test,
+      dependencies.catsEffectTesting % Test
+    )
   )
 
 // See https://www.scala-sbt.org/1.x/docs/Using-Sonatype.html for instructions on how to publish to Sonatype.
