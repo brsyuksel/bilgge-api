@@ -20,7 +20,7 @@ class LoginModuleSpec extends AsyncFreeSpec with AsyncIOSpec with Matchers {
   }
   val strGen: StringGenerator[IO] = _ => IO("randStr")
   val enc: Encrypt[IO] = (_, p) => IO(s"ENC($p)")
-  val hash: Checksum[IO] = (p, s) =>
+  val hash: HashGenerator[IO] = (p, s) =>
     p match {
       case "master-plain" => IO("login-token-hash-1")
       case _              => IO(s"$p-$s")

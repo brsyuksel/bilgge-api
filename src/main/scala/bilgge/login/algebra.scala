@@ -8,7 +8,7 @@ trait Encrypt[F[_]] {
   def encrypt(publicKey: String, plain: String): F[String]
 }
 
-trait Checksum[F[_]] {
+trait HashGenerator[F[_]] {
   def hash(data: String, salt: String): F[String]
 }
 

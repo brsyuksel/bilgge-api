@@ -16,7 +16,7 @@ abstract class LoginModule[F[_]: Monad](
   userRepo: UserRepository[F],
   generator: StringGenerator[F],
   encrypt: Encrypt[F],
-  checksum: Checksum[F],
+  checksum: HashGenerator[F],
   token: Token[F]
 )(implicit F: MonadError[F, Throwable]) {
 
