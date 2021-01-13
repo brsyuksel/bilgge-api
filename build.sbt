@@ -3,6 +3,7 @@ lazy val dependencies = new {
   lazy val catsEffect = "org.typelevel" %% "cats-effect" % "2.3.1"
   lazy val scalaTest = "org.scalatest" %% "scalatest" % "3.1.0"
   lazy val catsEffectTesting = "com.codecommit" %% "cats-effect-testing-scalatest" % "0.5.0"
+  lazy val commonsCodec = "commons-codec" % "commons-codec" % "1.15"
 }
 
 lazy val root = (project in file("."))
@@ -69,6 +70,7 @@ lazy val root = (project in file("."))
     libraryDependencies ++= Seq(
       dependencies.catsCore,
       dependencies.catsEffect,
+      dependencies.commonsCodec,
       dependencies.scalaTest % Test,
       dependencies.catsEffectTesting % Test
     )
