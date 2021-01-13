@@ -13,6 +13,10 @@ object Reason {
   case object Internal extends Reason {
     override def toString: String = "internal_error"
   }
+
+  case object Authentication extends Reason {
+    override def toString: String = "authentication"
+  }
 }
 
 final case class BilggeException(reason: Reason, messages: List[String])
@@ -36,4 +40,10 @@ object BilggeException {
 
   def internal(message: String): BilggeException =
     internal(List(message))
+
+  def authentication(messages: List[String]) =
+    new BilggeException(Reason.Authentication, messages)
+
+  def authentication(message: String): BilggeException =
+    authentication(List(message))
 }
