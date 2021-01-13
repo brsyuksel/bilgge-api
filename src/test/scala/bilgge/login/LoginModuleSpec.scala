@@ -25,7 +25,12 @@ class LoginModuleSpec extends AsyncFreeSpec with AsyncIOSpec with Matchers {
       case "master-plain" => IO("login-token-hash-1")
       case _              => IO(s"$p-$s")
   }
-  val jwt: Token[IO] = _ => IO("jwt")
+  val jwt: Token[IO] = new Token[IO] {
+    override def sign(c: Claim): IO[String] = IO("jwt")
+
+    override def verify(token: String): IO[Claim] =
+      IO.raiseError(new NotImplementedError)
+  }
   val module =
     new LoginModule[IO]("secret", userRepo, strGen, enc, hash, jwt) {}
 

@@ -48,11 +48,8 @@ abstract class LoginModule[F[_]: Monad](
         F.unit,
         F.raiseError(BilggeException.validation("plain does not match"))
       )
-      payload = Map[String, Any](
-        "username" -> user.username,
-        "user_id" -> userId.toString
-      )
-      jwt <- token.sign(payload)
+      claim = Claim(userId, user.username)
+      jwt <- token.sign(claim)
       auth = Authorized(jwt, user.publicKey, user.key, user.salt)
     } yield auth
 }
