@@ -18,7 +18,7 @@ object mock {
   val vSecId2 = UUID.fromString("313de6c8-f099-431b-9381-056c2da86ad2")
   private def now = LocalDateTime.now().some
 
-  final class HCUserRepository[F[_]: Applicative] extends UserRepository[F] {
+  class HCUserRepository[F[_]: Applicative] extends UserRepository[F] {
     override def create(u: User): F[User] =
       u.copy(id = UUID.randomUUID().some, createdAt = now, updatedAt = now)
         .pure[F]
@@ -31,6 +31,17 @@ object mock {
         User(
           vUserId.some,
           "case-1",
+          "pubkey-1",
+          "aeskey-1",
+          "hashsalt-1",
+          "login-token-hash-1".some,
+          now,
+          now
+        ).some.pure[F]
+      case "case-2" =>
+        User(
+          UUID.randomUUID().some,
+          "case-2",
           "pubkey-1",
           "aeskey-1",
           "hashsalt-1",
@@ -49,7 +60,7 @@ object mock {
           "pubkey-1",
           "aeskey-1",
           "hashsalt-1",
-          none,
+          "login-token-hash-1".some,
           now,
           now
         ).some.pure[F]
