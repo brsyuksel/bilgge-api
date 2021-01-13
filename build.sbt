@@ -1,9 +1,14 @@
 lazy val dependencies = new {
   lazy val catsCore = "org.typelevel" %% "cats-core" % "2.1.1"
   lazy val catsEffect = "org.typelevel" %% "cats-effect" % "2.3.1"
+  lazy val commonsCodec = "commons-codec" % "commons-codec" % "1.15"
+  lazy val circeCore = "io.circe" %% "circe-core" % "0.13.0"
+  lazy val circeGeneric = "io.circe" %% "circe-generic" % "0.13.0"
+  lazy val circeParser = "io.circe" %% "circe-parser" % "0.13.0"
+  lazy val jwtCore = "com.pauldijou" %% "jwt-core" % "4.2.0"
+  lazy val jwtCirce = "com.pauldijou" %% "jwt-circe" % "4.2.0"
   lazy val scalaTest = "org.scalatest" %% "scalatest" % "3.1.0"
   lazy val catsEffectTesting = "com.codecommit" %% "cats-effect-testing-scalatest" % "0.5.0"
-  lazy val commonsCodec = "commons-codec" % "commons-codec" % "1.15"
 }
 
 lazy val root = (project in file("."))
@@ -71,6 +76,11 @@ lazy val root = (project in file("."))
       dependencies.catsCore,
       dependencies.catsEffect,
       dependencies.commonsCodec,
+      dependencies.circeCore,
+      dependencies.circeGeneric,
+      dependencies.circeParser,
+      dependencies.jwtCore,
+      dependencies.jwtCirce,
       dependencies.scalaTest % Test,
       dependencies.catsEffectTesting % Test
     )
