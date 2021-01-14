@@ -19,8 +19,8 @@ import bilgge.secrets._
 
 case class Http(host: String, port: Int)
 case class DB(uri: String, user: String, password: String, connections: Int)
-case class Secrets(jwt: String, hash: String)
-case class Config(http: Http, db: DB, secrets: Secrets)
+case class Security(hashSecret: String, jwtSecret: String, jwtExpiresIn: Long)
+case class Config(http: Http, db: DB, security: Security)
 
 object main extends IOApp {
   def transactor(db: DB): Resource[IO, HikariTransactor[IO]] =
@@ -46,12 +46,15 @@ object main extends IOApp {
 
         val randomStringGenerator = new RandomStringGenerator[IO] {}
         val hashGenerator = new SHA256HashGenerator[IO] {}
-        val jwtToken = new CirceJWToken[IO](conf.secrets.jwt, 21600) {}
+        val jwtToken = new CirceJWToken[IO](
+          conf.security.jwtSecret,
+          conf.security.jwtExpiresIn
+        ) {}
         val encrypt = new RSAEncrypt[IO] {}
 
         val registerModule = new RegisterModule[IO](userRepo) {}
         val loginModule = new LoginModule[IO](
-          conf.secrets.hash,
+          conf.security.hashSecret,
           userRepo,
           randomStringGenerator,
           encrypt,
