@@ -91,7 +91,7 @@ object DoobieSecretRepository {
       sql"""
            SELECT id, user_id, collection_id, type, title, content, iv, ARRAY(SELECT jsonb_array_elements_text(hashes)), created_at, updated_at
            FROM secrets WHERE user_id = $userId AND collection_id = $collectionId AND hashes @> ${hashes.asJson}
-           OFFSET $offset LIMIT $limit
+           ORDER BY created_at DESC OFFSET $offset LIMIT $limit
          """.query[Secret].to[List]
 
     def totalBy(userId: UUID, collectionId: UUID, hashes: List[String]) =

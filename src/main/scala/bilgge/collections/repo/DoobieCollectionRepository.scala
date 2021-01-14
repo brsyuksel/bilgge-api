@@ -75,6 +75,7 @@ object DoobieCollectionRepository {
       sql"""
            SELECT id, user_id, name, iv, created_at, updated_at
            FROM collections WHERE user_id = $userId
+           ORDER BY created_at DESC
          """.query[Collection].to[List]
   }
 }
