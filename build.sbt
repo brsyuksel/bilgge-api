@@ -7,6 +7,11 @@ lazy val dependencies = new {
   lazy val circeParser = "io.circe" %% "circe-parser" % "0.13.0"
   lazy val jwtCore = "com.pauldijou" %% "jwt-core" % "4.2.0"
   lazy val jwtCirce = "com.pauldijou" %% "jwt-circe" % "4.2.0"
+  lazy val postgresql = "org.postgresql" % "postgresql" % "42.2.18"
+  lazy val doobieCore = "org.tpolecat" %% "doobie-core" % "0.9.4"
+  lazy val doobieHikari = "org.tpolecat" %% "doobie-hikari" % "0.9.4"
+  lazy val doobiePG = "org.tpolecat" %% "doobie-postgres" % "0.9.4"
+  lazy val doobiePGCirce = "org.tpolecat" %% "doobie-postgres-circe" % "0.9.4"
   lazy val scalaTest = "org.scalatest" %% "scalatest" % "3.1.0"
   lazy val catsEffectTesting = "com.codecommit" %% "cats-effect-testing-scalatest" % "0.5.0"
 }
@@ -81,6 +86,11 @@ lazy val root = (project in file("."))
       dependencies.circeParser,
       dependencies.jwtCore,
       dependencies.jwtCirce,
+      dependencies.postgresql,
+      dependencies.doobieCore,
+      dependencies.doobieHikari,
+      dependencies.doobiePG,
+      dependencies.doobiePGCirce,
       dependencies.scalaTest % Test,
       dependencies.catsEffectTesting % Test
     )
