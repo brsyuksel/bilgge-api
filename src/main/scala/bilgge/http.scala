@@ -8,7 +8,7 @@ import cats.data._
 import cats.effect._
 import cats.implicits._
 import org.http4s._
-import org.http4s.headers.Authorization
+import org.http4s.headers.{Authorization, Location}
 import org.http4s.implicits._
 import org.http4s.circe._
 import org.http4s.dsl.io._
@@ -104,8 +104,17 @@ abstract class http(jwtToken: Token[IO],
     case req @ POST -> Root / "collections" as claim =>
       val res = for {
         r <- req.req.as[CollectionUpsertRequest]
-        _ <- collectionsModule.create(claim.userId, r.name, r._iv)
-        resp <- Created() // FIXME: location header
+        c <- collectionsModule.create(claim.userId, r.name, r._iv)
+        collId <- IO.fromOption(c.id)(
+          BilggeException.internal("something went wrong")
+        )
+        path = s"/collections/${collId.toString}"
+        uri <- IO.fromEither(
+          Uri
+            .fromString(path)
+            .leftMap(_ => BilggeException.internal("something went wrong"))
+        )
+        resp <- Created(Location(uri))
       } yield resp
       res.handleErrorWith(errorHandler)
 
@@ -151,7 +160,7 @@ abstract class http(jwtToken: Token[IO],
     case req @ POST -> Root / "secrets" as claim =>
       val res = for {
         r <- req.req.as[SecretUpsertRequest]
-        _ <- secretsModule.create(
+        s <- secretsModule.create(
           claim.userId,
           r.collectionId,
           r.`type`,
@@ -160,7 +169,16 @@ abstract class http(jwtToken: Token[IO],
           r.iv,
           r.hashes
         )
-        resp <- Created() // FIXME: location header
+        secretId <- IO.fromOption(s.id)(
+          BilggeException.internal("something went wrong")
+        )
+        path = s"/secrets/${secretId.toString}"
+        uri <- IO.fromEither(
+          Uri
+            .fromString(path)
+            .leftMap(_ => BilggeException.internal("something went wrong"))
+        )
+        resp <- Created(Location(uri))
       } yield resp
       res.handleErrorWith(errorHandler)
 
