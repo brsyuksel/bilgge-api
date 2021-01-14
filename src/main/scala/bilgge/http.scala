@@ -44,9 +44,13 @@ abstract class http(jwtToken: Token[IO],
 
   private def errorHandler: Throwable => IO[Response[IO]] = {
     case t: BilggeException =>
-      val err = ErrorResponse(t.reason.toString, t.messages)
-      BadRequest(err.asJson)
-    case t => InternalServerError(t.getMessage)
+      val err = ErrorResponse(t.reason.toString, t.messages).asJson
+      t.reason match {
+        case Reason.Validation => BadRequest(err)
+        case Reason.NotFound   => NotFound(err)
+        case _                 => InternalServerError(err)
+      }
+    case _ => InternalServerError()
   }
 
   implicit val uuidQPDec: QueryParamDecoder[UUID] =
