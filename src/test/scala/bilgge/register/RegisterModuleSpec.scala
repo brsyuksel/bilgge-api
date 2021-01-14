@@ -23,7 +23,7 @@ class RegisterModuleSpec extends AsyncFreeSpec with AsyncIOSpec with Matchers {
           .shouldBe(Right(Reason.Validation))
         err
           .map(_.messages.size)
-          .shouldBe(Right(4))
+          .shouldBe(Right(5))
       }
     }
     "returns user already exists" in {

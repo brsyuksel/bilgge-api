@@ -36,6 +36,10 @@ private[register] object validation {
     if (s.matches("^[a-zA-Z]+[\\w.-]+$")) s.validNel
     else "invalid username".invalidNel
 
+  def usernameLength(s: String): ValidRes[String] =
+    if (s.length > 2) s.validNel
+    else "invalid username".invalidNel
+
   def publicKey(s: String): ValidRes[String] =
     if (s.nonEmpty) s.validNel
     else "public_key can not be empty".invalidNel
@@ -49,8 +53,8 @@ private[register] object validation {
     else "salt can not be empty".invalidNel
 
   def validate(u: String, pk: String, k: String, s: String) =
-    (username(u), publicKey(pk), key(k), salt(s))
-      .mapN((_, _, _, _) => ().validNel)
+    (username(u), usernameLength(u), publicKey(pk), key(k), salt(s))
+      .mapN((_, _, _, _, _) => ().validNel)
 
   def validateExc(u: String, pk: String, k: String, s: String) =
     validate(u, pk, k, s).toEither
