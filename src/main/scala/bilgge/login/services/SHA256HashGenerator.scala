@@ -6,8 +6,9 @@ import cats.effect._
 
 import bilgge.login.HashGenerator
 
-abstract class SHA256HashGenerator[F[_]: Sync] extends HashGenerator[F] {
-  override def hash(data: String, salt: String): F[String] =
+abstract class SHA256HashGenerator[F[_]: Sync](salt: String)
+    extends HashGenerator[F] {
+  override def hash(data: String): F[String] =
     Sync[F].delay {
       val plain = s"$data.$salt".getBytes
       MessageDigest

@@ -11,7 +11,7 @@ trait Encrypt[F[_]] {
 }
 
 trait HashGenerator[F[_]] {
-  def hash(data: String, salt: String): F[String]
+  def hash(data: String): F[String]
 }
 
 final case class Claim(userId: UUID, username: String)

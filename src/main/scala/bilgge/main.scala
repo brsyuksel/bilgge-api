@@ -45,7 +45,8 @@ object main extends IOApp {
         val secretRepo = new DoobieSecretRepository[IO](xa) {}
 
         val randomStringGenerator = new RandomStringGenerator[IO] {}
-        val hashGenerator = new SHA256HashGenerator[IO] {}
+        val hashGenerator =
+          new SHA256HashGenerator[IO](conf.security.hashSecret) {}
         val jwtToken = new CirceJWToken[IO](
           conf.security.jwtSecret,
           conf.security.jwtExpiresIn
@@ -54,7 +55,6 @@ object main extends IOApp {
 
         val registerModule = new RegisterModule[IO](userRepo) {}
         val loginModule = new LoginModule[IO](
-          conf.security.hashSecret,
           userRepo,
           randomStringGenerator,
           encrypt,

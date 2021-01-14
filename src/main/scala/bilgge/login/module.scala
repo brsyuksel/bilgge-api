@@ -12,7 +12,6 @@ final case class Authorized(token: String,
                             salt: String)
 
 abstract class LoginModule[F[_]: Monad](
-  hashSecret: String,
   userRepo: UserRepository[F],
   generator: StringGenerator[F],
   encrypt: Encrypt[F],
@@ -26,7 +25,7 @@ abstract class LoginModule[F[_]: Monad](
       user <- F.fromOption(u, BilggeException.notFound("user not found"))
       plain <- generator.generate(32)
       cipher <- encrypt.encrypt(user.publicKey, plain)
-      hash <- checksum.hash(plain, hashSecret)
+      hash <- checksum.hash(plain)
       updateUser = user.copy(loginToken = hash.some)
       _ <- userRepo.update(updateUser)
     } yield cipher
@@ -43,7 +42,7 @@ abstract class LoginModule[F[_]: Monad](
         user.loginToken,
         BilggeException.notFound("perform login request first")
       )
-      hash <- checksum.hash(plain, hashSecret)
+      hash <- checksum.hash(plain)
       _ <- F.ifM((loginToken === hash).pure[F])(
         F.unit,
         F.raiseError(BilggeException.validation("plain does not match"))

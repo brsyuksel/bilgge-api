@@ -20,10 +20,9 @@ class LoginModuleSpec extends AsyncFreeSpec with AsyncIOSpec with Matchers {
   }
   val strGen: StringGenerator[IO] = _ => IO("randStr")
   val enc: Encrypt[IO] = (_, p) => IO(s"ENC($p)")
-  val hash: HashGenerator[IO] = (p, s) =>
-    p match {
-      case "master-plain" => IO("login-token-hash-1")
-      case _              => IO(s"$p-$s")
+  val hash: HashGenerator[IO] = {
+    case "master-plain" => IO("login-token-hash-1")
+    case p              => IO(s"$p")
   }
   val jwt: Token[IO] = new Token[IO] {
     override def sign(c: Claim): IO[String] = IO("jwt")
@@ -32,7 +31,7 @@ class LoginModuleSpec extends AsyncFreeSpec with AsyncIOSpec with Matchers {
       IO.raiseError(new NotImplementedError)
   }
   val module =
-    new LoginModule[IO]("secret", userRepo, strGen, enc, hash, jwt) {}
+    new LoginModule[IO](userRepo, strGen, enc, hash, jwt) {}
 
   "request" - {
     "returns user not found error" in {
@@ -47,7 +46,7 @@ class LoginModuleSpec extends AsyncFreeSpec with AsyncIOSpec with Matchers {
         c.shouldBe("ENC(randStr)")
         userRepo.lastUpdated
           .flatMap(_.loginToken)
-          .shouldBe(Some("randStr-secret"))
+          .shouldBe(Some("randStr"))
       }
     }
   }
