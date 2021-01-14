@@ -51,5 +51,7 @@ abstract class LoginModule[F[_]: Monad](
       claim = Claim(userId, user.username)
       jwt <- token.sign(claim)
       auth = Authorized(jwt, user.publicKey, user.key, user.salt)
+      updateUser = user.copy(loginToken = none)
+      _ <- userRepo.update(updateUser)
     } yield auth
 }
