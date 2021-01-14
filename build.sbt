@@ -12,6 +12,10 @@ lazy val dependencies = new {
   lazy val doobieHikari = "org.tpolecat" %% "doobie-hikari" % "0.9.4"
   lazy val doobiePG = "org.tpolecat" %% "doobie-postgres" % "0.9.4"
   lazy val doobiePGCirce = "org.tpolecat" %% "doobie-postgres-circe" % "0.9.4"
+  lazy val circeConf = "io.circe" %% "circe-config" % "0.8.0"
+  lazy val http4sDSL = "org.http4s" %% "http4s-dsl" % "0.21.14"
+  lazy val http4sServer = "org.http4s" %% "http4s-blaze-server" % "0.21.14"
+  lazy val http4sCirce = "org.http4s" %% "http4s-circe" % "0.21.14"
   lazy val scalaTest = "org.scalatest" %% "scalatest" % "3.1.0"
   lazy val catsEffectTesting = "com.codecommit" %% "cats-effect-testing-scalatest" % "0.5.0"
 }
@@ -91,6 +95,10 @@ lazy val root = (project in file("."))
       dependencies.doobieHikari,
       dependencies.doobiePG,
       dependencies.doobiePGCirce,
+      dependencies.circeConf,
+      dependencies.http4sDSL,
+      dependencies.http4sServer,
+      dependencies.http4sCirce,
       dependencies.scalaTest % Test,
       dependencies.catsEffectTesting % Test
     )
