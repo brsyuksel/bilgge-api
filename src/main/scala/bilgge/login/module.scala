@@ -32,6 +32,9 @@ abstract class LoginModule[F[_]: Monad](
 
   def authorize(username: String, plain: String): F[Authorized] =
     for {
+      _ <- F.whenA(plain.isEmpty)(
+        F.raiseError(BilggeException.validation("plain can not be empty"))
+      )
       u <- userRepo.getBy(username)
       user <- F.fromOption(u, BilggeException.notFound("user not found"))
       userId <- F.fromOption(
