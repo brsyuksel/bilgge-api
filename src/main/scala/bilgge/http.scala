@@ -15,7 +15,6 @@ import org.http4s.dsl.io._
 import org.http4s.server._
 import org.http4s.server.blaze._
 import io.circe._
-import io.circe.generic.semiauto._
 import io.circe.generic.auto._
 import io.circe.syntax._
 
@@ -102,7 +101,7 @@ abstract class http(jwtToken: Token[IO],
     case GET -> Root / "collections" as claim =>
       collectionsModule
         .list(claim.userId)
-        .flatMap(l => Ok(l.asJson))
+        .flatMap(l => Ok(DataListingResponse(l).asJson))
         .handleErrorWith(errorHandler)
 
     case req @ POST -> Root / "collections" as claim =>
@@ -151,6 +150,7 @@ abstract class http(jwtToken: Token[IO],
   lazy val secretRoutes = AuthedRoutes.of[Claim, IO] {
     case GET -> Root / "secrets" :? collIdQPMatcher(collId) +&
           offsetQPMatcher(offset) +& limitQPMatcher(limit) +& qQPOptMatcher(h) as claim =>
+      implicit val secEnc: Encoder[Secret] = secretListingEnc
       val q = h
         .map(_.split(',').toList.filter(_.nonEmpty))
         .getOrElse(List.empty[String])
@@ -187,6 +187,7 @@ abstract class http(jwtToken: Token[IO],
       res.handleErrorWith(errorHandler)
 
     case GET -> Root / "secrets" / UUIDVar(secretId) as claim =>
+      implicit val secDetailSenc: Encoder[Secret] = secretEnc
       secretsModule
         .get(claim.userId, secretId)
         .flatMap(s => Ok(s.asJson))
@@ -314,7 +315,7 @@ object http {
       "updated_at"
     )(c => (c.id, c.userId, c.name, c.iv, c.createdAt, c.updatedAt))
 
-    implicit val secretEnc: Encoder[Secret] = Encoder.forProduct10(
+    val secretEnc: Encoder[Secret] = Encoder.forProduct10(
       "id",
       "user_id",
       "collection_id",
@@ -340,5 +341,31 @@ object http {
           s.updatedAt
       )
     )
+
+    val secretListingEnc: Encoder[Secret] = Encoder.forProduct9(
+      "id",
+      "user_id",
+      "collection_id",
+      "type",
+      "title",
+      "_iv",
+      "hashes",
+      "created_at",
+      "updated_at"
+    )(
+      s =>
+        (
+          s.id,
+          s.userId,
+          s.collectionId,
+          s.`type`,
+          s.title,
+          s.iv,
+          s.hashes,
+          s.createdAt,
+          s.updatedAt
+      )
+    )
+
   }
 }
