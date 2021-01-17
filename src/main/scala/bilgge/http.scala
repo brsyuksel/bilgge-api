@@ -14,6 +14,7 @@ import org.http4s.circe._
 import org.http4s.dsl.io._
 import org.http4s.server._
 import org.http4s.server.blaze._
+import org.http4s.server.middleware.CORS
 import io.circe._
 import io.circe.generic.auto._
 import io.circe.syntax._
@@ -246,7 +247,7 @@ abstract class http(jwtToken: Token[IO],
       auth(collectionRoutes) <+>
       auth(secretRoutes)
 
-  lazy val router = Router("/" -> services).orNotFound
+  lazy val router = Router("/" -> CORS(services)).orNotFound
 }
 
 object http {
