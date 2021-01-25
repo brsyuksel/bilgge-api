@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  sbt-tests-and-pact-verification:
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -59,6 +59,7 @@ jobs:
       env:
         JAVA_OPTS: -Dconfig.file=src/main/resources/ci.conf
       run: |
+        sbt pack
         nohup ./target/pack/bin/bilgge > /dev/null 2>&1 &
         bilgge_pid=$!
     
