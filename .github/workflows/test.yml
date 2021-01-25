@@ -50,8 +50,8 @@ jobs:
     
     - name: initialize database
       run: |
-        psql -U -f src/main/resources/db/init.sql
-        psql -U -f src/main/resources/db/ci.sql
+        psql -U postgres -h localhost -f src/main/resources/db/init.sql
+        psql -U postgres -h localhost -f src/main/resources/db/ci.sql
     
     - name: run bilgge in bg with ci parameters
       env:
