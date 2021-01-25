@@ -32,7 +32,7 @@ jobs:
         sudo apt update
         sudo apt -y install postgresql-client-13
     
-    - name: push pact-cli docker image
+    - name: pull pact-cli docker image
       run: docker pull pactfoundation/pact-cli:latest
     
     - name: setup-graalvm-ce
@@ -49,6 +49,8 @@ jobs:
       run: sbt test
     
     - name: initialize database
+      env:
+        PGPASSWORD: postgres
       run: |
         psql -U postgres -h localhost -f src/main/resources/db/init.sql
         psql -U postgres -h localhost -f src/main/resources/db/ci.sql
