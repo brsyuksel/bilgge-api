@@ -1,5 +1,5 @@
 INSERT INTO users (id, username, public_key, key, salt, login_token)
-VALUES (uuid_generate_V4(), 'ybaroj', 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCFPjgJZAYwiLRO7nMF9y9p2SSr\nrAwBHqoPjAG+Fos5glD7UCm3/hsv4kSndV5SrhRfe6J584Ng3juick0YJPE9Vnmx\nU4vNU45r9qrvgPyovKXMr5iPej10+mucVqTfQpcnGaXHb8YLbM/dfRLXmy8wyEE/\nU9OYIjR2VlAQK9gsjwIDAQAB', 'ybaroj-aes-key', 'ybaroj-salt', NULL),
+VALUES (uuid_generate_V4(), 'ybaroj', 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCFPjgJZAYwiLRO7nMF9y9p2SSrrAwBHqoPjAG+Fos5glD7UCm3/hsv4kSndV5SrhRfe6J584Ng3juick0YJPE9VnmxU4vNU45r9qrvgPyovKXMr5iPej10+mucVqTfQpcnGaXHb8YLbM/dfRLXmy8wyEE/U9OYIjR2VlAQK9gsjwIDAQAB', 'ybaroj-aes-key', 'ybaroj-salt', NULL),
        ('75ab36d3-3552-407b-b64b-0c56424fc479'::uuid, 'pact-verifier-user', 'pact-verifier-pub-key', 'pact-verifier-aes-key', 'pact-verifier-salt', 'f0523ff3615677c407aeb10d5fc49d0954b62fb1b4855bfc66007443b3c5949f');
 
 INSERT INTO collections (id, user_id, name, iv)
