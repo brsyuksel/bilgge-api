@@ -69,7 +69,3 @@ jobs:
         PACT_BROKER_TOKEN: ${{ secrets.PACT_BROKER_TOKEN }}
       run: |
         docker run --rm --network host -e PACT_BROKER_BASE_URL -e PACT_BROKER_TOKEN -e PACT_BROKER_PUBLISH_VERIFICATION_RESULTS=true pactfoundation/pact-cli:latest verify --provider-base-url http://localhost:9092 --provider bilggeApi --provider-app-version 0.1.0
-    
-    - name: kill bilgge
-      run: kill -2 $bilgge_pid
-    
