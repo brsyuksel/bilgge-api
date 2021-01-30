@@ -17,10 +17,10 @@ import bilgge.login.services._
 import bilgge.collections._
 import bilgge.secrets._
 
-case class Http(host: String, port: Int)
+case class HttpServer(host: String, port: Int)
 case class DB(uri: String, user: String, password: String, connections: Int)
 case class Security(hashSecret: String, jwtSecret: String, jwtExpiresIn: Long)
-case class Config(http: Http, db: DB, security: Security)
+case class Config(http: HttpServer, db: DB, security: Security)
 
 object main extends IOApp {
   def transactor(db: DB): Resource[IO, HikariTransactor[IO]] =
