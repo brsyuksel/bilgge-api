@@ -1,8 +1,6 @@
 name: sbt test and pact provider verification
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
 
