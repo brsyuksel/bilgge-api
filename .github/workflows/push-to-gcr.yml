@@ -12,6 +12,8 @@ jobs:
       - name: get the version
         id: get_tag_name
         run: echo ::set-output name=GIT_TAG_NAME::${GITHUB_REF/refs\/tags\//}
+      - name: checkout repo
+        uses: actions/checkout@v2
       - name: build then push to gcr
         uses: RafikFarhad/push-to-gcr-github-action@v3
         with:
