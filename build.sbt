@@ -23,7 +23,7 @@ lazy val dependencies = new {
 lazy val root = (project in file("."))
   .settings(
     name := "bilgge",
-    version := "0.1.0",
+    version := "0.1.1",
     scalaVersion := "2.13.4",
     scalacOptions ++= Seq(
       // thanks are going to: https://gist.github.com/tabdulradi/aa7450921756cd22db6d278100b2dac8
